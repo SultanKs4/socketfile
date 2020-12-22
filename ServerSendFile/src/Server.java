@@ -10,9 +10,9 @@ import java.net.UnknownHostException;
 public class Server {
     private JTextField portServer;
     private JTextField ipServer;
-    private JTextField txtIsi;
     private JPanel panelServer;
     private JButton btnListen;
+    private JTextArea textIsi;
     private ServerSocket serverSocket;
     private Socket clientSocket;
 
@@ -71,6 +71,13 @@ public class Server {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 assert input != null;
+                StringBuilder tmp = new StringBuilder();
+                while (input.ready()) {
+                    String line = input.readLine();
+                    tmp.append(line);
+                    tmp.append("\n");
+                }
+                textIsi.setText(tmp.toString());
                 String read = input.readLine();
                 if (read == null) {
                     Thread.interrupted();
@@ -78,7 +85,6 @@ public class Server {
                     System.out.println("Client: " + read);
                     break;
                 }
-                txtIsi.setText(read);
             } catch (IOException e) {
                 e.printStackTrace();
             }
